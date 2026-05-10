@@ -22,8 +22,9 @@ const lignes = [
 ];
 
 function App() {
-  const [recherche, setRecherche] = useState("");
-  const [ligneSelectionnee, setLigneSelectionnee] = useState(null);
+ const [recherche, setRecherche] = useState("");
+ const [ligneSelectionnee, setLigneSelectionnee] = useState(null);
+ const [nbRecherches, setNbRecherches] = useState(0);
 
   const lignesFiltrees = lignes.filter(l =>
     l.depart.toLowerCase().includes(recherche.toLowerCase()) ||
@@ -42,8 +43,13 @@ function App() {
     <div className="App">
       <Header />
       <main className="contenu">
-        <Recherche valeur={recherche} onChange={setRecherche} />
+        <Recherche valeur={recherche} onChange={(val) => {
+  setRecherche(val);
+  setNbRecherches(nbRecherches + 1);
+}} />
+        <p>Vous avez effectué {nbRecherches} recherche(s)</p>
         <p>{lignesFiltrees.length} ligne(s) trouvée(s)</p>
+        {lignesFiltrees.length === 0 && <p>Aucune ligne trouvée</p>}
         {lignesFiltrees.map(ligne => (
           <LigneBus
             key={ligne.id}
